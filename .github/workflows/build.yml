@@ -6,8 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  libressl_version: 3.8.0
+  libressl_version: 3.8.2
   nginx_version: 1.25.3
+  ngx_brotli_commit: 6e975bcb015f62e1f303054897783355e2a877dc
 
 jobs:
   build:
@@ -29,7 +30,13 @@ jobs:
         REPO_URL: https://github.com/google/ngx_brotli
         REPO_BRANCH: master
       run: |
-        git clone --depth 1 --recursive $REPO_URL -b $REPO_BRANCH
+        mkdir -p ngx_brotli
+        cd ngx_brotli
+        git init
+        git remote add origin $REPO_URL
+        git fetch --depth 1 origin ${{env.ngx_brotli_commit}}
+        git checkout --recurse-submodules -q FETCH_HEAD
+        git submodule update --init --depth 1
         
     - name: Download libressl
       run: |
