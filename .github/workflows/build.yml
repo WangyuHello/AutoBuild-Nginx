@@ -41,6 +41,7 @@ jobs:
 
     - name: Docker Build Nginx
       run: |
+        ls -la
         sudo docker build --no-cache -t wangyu.live:16000/dayu-nginx .
 
     - name : Docker Pack Nginx
