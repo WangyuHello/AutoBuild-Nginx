@@ -53,7 +53,7 @@ jobs:
     - name : Docker Pack Nginx
       run: |
         sudo docker save wangyu.live:16000/dayu-nginx -o dayu-nginx.tar
-        chmod 777 dayu-nginx.tar
+        sudo chmod 777 dayu-nginx.tar
 
     - name : Upload artifact
       uses: actions/upload-artifact@master
