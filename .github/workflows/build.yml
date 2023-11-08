@@ -22,14 +22,14 @@ jobs:
         REPO_URL: https://github.com/arut/nginx-dav-ext-module
         REPO_BRANCH: master
       run: |
-        git clone $REPO_URL -b $REPO_BRANCH
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH
 
     - name: Clone Nginx Brotli
       env: 
         REPO_URL: https://github.com/google/ngx_brotli
         REPO_BRANCH: master
       run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH
+        git clone --depth 1 --recursive $REPO_URL -b $REPO_BRANCH
         
     - name: Download libressl
       run: |
