@@ -10,6 +10,7 @@ ADD nginx.tar.gz ${NGINX_SRC_DIR}
 ADD libressl.tar.gz ${NGINX_SRC_DIR}
 ADD ./nginx-dav-ext-module/ ${NGINX_SRC_DIR}/nginx-dav-ext-module/
 ADD ./ngx_brotli/ ${NGINX_SRC_DIR}/ngx_brotli/
+ADD ./headers-more-nginx-module/ ${NGINX_SRC_DIR}/headers-more-nginx-module/
 
 RUN \
     apt-get update --no-install-recommends -y \
@@ -43,6 +44,7 @@ RUN \
         --with-http_v2_module \
         --with-http_v3_module \
         --with-openssl=${NGINX_SRC_DIR}/libressl-${LIBRESSL_VERSION} \
+        --add-module=${NGINX_SRC_DIR}/headers-more-nginx-module \
         --add-module=${NGINX_SRC_DIR}/nginx-dav-ext-module \
         --add-module=${NGINX_SRC_DIR}/ngx_brotli \
         --with-cc-opt='-O2' \
