@@ -1,8 +1,6 @@
 FROM debian:bookworm-slim
 # FROM arm64v8/debian:bookworm-slim
 
-ARG NGINX_NAME=nginx-1.25.2
-ARG LIBRESSL_NAME=libressl-3.8.0
 ARG NGINX_SRC_DIR=/usr/local/src
 ARG NGINX_HOME=/usr/local/nginx
 
