@@ -45,7 +45,7 @@ RUN \
         --with-openssl=${NGINX_SRC_DIR}/libressl-{LIBRESSL_VERSION} \
         --add-module=${NGINX_SRC_DIR}/nginx-dav-ext-module \
         --add-module=${NGINX_SRC_DIR}/ngx_brotli \
-    && cd ${NGINX_SRC_DIR}/nginx && make -j$(getconf _NPROCESSORS_ONLN) && make install
+    && cd ${NGINX_SRC_DIR}/nginx-${NGINX_VERSION} && make -j$(getconf _NPROCESSORS_ONLN) && make install
 
 ENV PATH=$PATH:${NGINX_HOME}/sbin
 EXPOSE 80 443
