@@ -48,13 +48,12 @@ jobs:
 
     - name: Docker Build Nginx
       run: |
-        ls -la
         sudo docker build --no-cache -t wangyu.live:16000/dayu-nginx --build-arg NGINX_VERSION=${{env.nginx_version}} --build-arg LIBRESSL_VERSION=${{env.libressl_version}} .
 
     - name : Docker Pack Nginx
       run: |
         sudo docker save wangyu.live:16000/dayu-nginx -o dayu-nginx.tar
-        ls -la
+        chmod 777 dayu-nginx.tar
 
     - name : Upload artifact
       uses: actions/upload-artifact@master
