@@ -8,7 +8,7 @@ on:
 env:
   libressl_version: 3.8.2
   nginx_version: 1.25.3
-  ngx_brotli_commit: 6e975bcb015f62e1f303054897783355e2a877dc
+  ngx_brotli_commit: a71f9312c2deb28875acc7bacfdd5695a111aa53
 
 jobs:
   build:
