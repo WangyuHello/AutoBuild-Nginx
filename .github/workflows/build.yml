@@ -42,7 +42,7 @@ jobs:
     - name: Docker Build Nginx
       run: |
         ls -la
-        sudo docker build --no-cache -t wangyu.live:16000/dayu-nginx --build-arg NGINX_VERSION=${{env.nginx_version}} LIBRESSL_VERSION=${{env.libressl_version}} .
+        sudo docker build --no-cache -t wangyu.live:16000/dayu-nginx --build-arg NGINX_VERSION=${{env.nginx_version}} --build-arg LIBRESSL_VERSION=${{env.libressl_version}} .
 
     - name : Docker Pack Nginx
       run: |
