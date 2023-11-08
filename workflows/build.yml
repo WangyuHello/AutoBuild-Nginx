@@ -1,0 +1,81 @@
+name: build
+
+# Add a button to trigger the workflow
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+
+env:
+  libressl_version: 3.8.2
+  nginx_version: 1.25.3
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        set +e
+        docker rmi `docker images -q`
+        echo "Deleting files, please wait ..."
+        sudo rm -rf \
+          /usr/share/dotnet \
+          /etc/mysql \
+          /etc/php
+        sudo -E apt-get -y purge \
+          azure-cli \
+          ghc* \
+          zulu* \
+          hhvm \
+          llvm* \
+          firefox \
+          google* \
+          dotnet* \
+          powershell \
+          openjdk* \
+          mysql* \
+          php*
+        sudo -E apt-get update
+        sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+        sudo -E apt-get -y autoremove --purge
+        sudo -E apt-get clean
+
+    - name: Clone Nginx WebDAV
+      env: 
+        REPO_URL: https://github.com/arut/nginx-dav-ext-module
+        REPO_BRANCH: master
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH
+
+    - name: Clone Nginx Brotli
+      env: 
+        REPO_URL: https://github.com/google/ngx_brotli
+        REPO_BRANCH: master
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH
+        
+    - name: Download libressl
+      run: |
+        wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${{libressl_version}}.tar.gz -o libressl.tar.gz
+
+    - name: Download Nginx
+      run: |
+        wget https://nginx.org/download/nginx-${{nginx_version}}.tar.gz -o nginx.tar.gz
+
+    - name: Docker Build Nginx
+      run: |
+        sudo docker build --no-cache -t wangyu.live:16000/dayu-nginx .
+
+    - name : Docker Pack Nginx
+      run: |
+        sudo docker save wangyu.live:16000/dayu-nginx -o dayu-nginx.tar
+
+    - name : Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: dayu-nginx
+        path: dayu-nginx.tar
