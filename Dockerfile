@@ -42,7 +42,7 @@ RUN \
         --with-http_sub_module \
         --with-http_v2_module \
         --with-http_v3_module \
-        --with-openssl=${NGINX_SRC_DIR}/libressl-{LIBRESSL_VERSION} \
+        --with-openssl=${NGINX_SRC_DIR}/libressl-${LIBRESSL_VERSION} \
         --add-module=${NGINX_SRC_DIR}/nginx-dav-ext-module \
         --add-module=${NGINX_SRC_DIR}/ngx_brotli \
     && cd ${NGINX_SRC_DIR}/nginx-${NGINX_VERSION} && make -j$(getconf _NPROCESSORS_ONLN) && make install
