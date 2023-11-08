@@ -33,11 +33,11 @@ jobs:
         
     - name: Download libressl
       run: |
-        wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${{env.libressl_version}}.tar.gz -o libressl.tar.gz
+        wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${{env.libressl_version}}.tar.gz -O libressl.tar.gz
 
     - name: Download Nginx
       run: |
-        wget https://nginx.org/download/nginx-${{env.nginx_version}}.tar.gz -o nginx.tar.gz
+        wget https://nginx.org/download/nginx-${{env.nginx_version}}.tar.gz -O nginx.tar.gz
 
     - name: Docker Build Nginx
       run: |
