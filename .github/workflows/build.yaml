@@ -99,7 +99,7 @@ jobs:
           sudo echo "127.0.0.1 $MY_HOSTNAME" | sudo tee -a /etc/hosts
           wget -q https://github.com/MetaCubeX/mihomo/releases/download/v1.19.18/mihomo-linux-amd64-v3-v1.19.18.deb
           sudo apt install ./mihomo-linux-amd64-v3-v1.19.18.deb
-          nohup mihomo -config $TUNNEL_CONFIG &
+          nohup mihomo -config $TUNNEL_CONFIG > /dev/null 2>&1 &
 
       - name: Upload
         run: |
