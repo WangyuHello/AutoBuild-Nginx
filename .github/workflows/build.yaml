@@ -17,11 +17,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@master
 
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
-
       - name: Download Nginx
         run: |
           curl -sLo nginx.tar.gz https://nginx.org/download/nginx-$VER_NGINX.tar.gz
