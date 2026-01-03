@@ -276,8 +276,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=SC2086
 RUN set -eux \
-    && sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/' /etc/apt/sources.list.d/ubuntu.sources \
-    && sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/' /etc/apt/sources.list.d/ubuntu.sources \
     && apt-get update \
     && apt-get install -y --no-install-recommends --no-install-suggests \
         $PKG_DEPS \
