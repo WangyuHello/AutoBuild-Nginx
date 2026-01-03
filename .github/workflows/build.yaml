@@ -17,79 +17,79 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@master
 
-      - name: Download Nginx
-        run: |
-          curl -sLo nginx.tar.gz https://nginx.org/download/nginx-$VER_NGINX.tar.gz
-          tar -C . -xvzf nginx.tar.gz
-          ls -la nginx-$VER_NGINX
+      # - name: Download Nginx
+      #   run: |
+      #     curl -sLo nginx.tar.gz https://nginx.org/download/nginx-$VER_NGINX.tar.gz
+      #     tar -C . -xvzf nginx.tar.gz
+      #     ls -la nginx-$VER_NGINX
 
-      - name: Download Zstd
-        run: |
-          curl -fSL https://github.com/facebook/zstd/releases/download/v$VER_ZSTD/zstd-$VER_ZSTD.tar.gz -o zstd.tar.gz
-          tar xzf zstd.tar.gz
-          mv zstd-$VER_ZSTD zstd
-          ls -la zstd
+      # - name: Download Zstd
+      #   run: |
+      #     curl -fSL https://github.com/facebook/zstd/releases/download/v$VER_ZSTD/zstd-$VER_ZSTD.tar.gz -o zstd.tar.gz
+      #     tar xzf zstd.tar.gz
+      #     mv zstd-$VER_ZSTD zstd
+      #     ls -la zstd
 
-      - name: Download Nginx Zstd
-        run: |
-          mkdir -p ngx-zstd-$VER_NGINX_ZSTD
-          cd ngx-zstd-$VER_NGINX_ZSTD
-          git init
-          git remote add origin https://github.com/HanadaLee/ngx_http_zstd_module.git
-          git fetch --depth 10 origin $VER_NGINX_ZSTD
-          git checkout --recurse-submodules -q FETCH_HEAD
-          ls -la
+      # - name: Download Nginx Zstd
+      #   run: |
+      #     mkdir -p ngx-zstd-$VER_NGINX_ZSTD
+      #     cd ngx-zstd-$VER_NGINX_ZSTD
+      #     git init
+      #     git remote add origin https://github.com/HanadaLee/ngx_http_zstd_module.git
+      #     git fetch --depth 10 origin $VER_NGINX_ZSTD
+      #     git checkout --recurse-submodules -q FETCH_HEAD
+      #     ls -la
 
-      - name: Download Nginx Brotli
-        run: |
-          mkdir -p ngx-brotli-$VER_NGINX_BROTLI
-          cd ngx-brotli-$VER_NGINX_BROTLI
-          git init
-          git remote add origin https://github.com/google/ngx_brotli.git
-          git fetch --depth 1 origin $VER_NGINX_BROTLI
-          git checkout --recurse-submodules -q FETCH_HEAD
-          git submodule update --init --depth 1
-          ls -la
+      # - name: Download Nginx Brotli
+      #   run: |
+      #     mkdir -p ngx-brotli-$VER_NGINX_BROTLI
+      #     cd ngx-brotli-$VER_NGINX_BROTLI
+      #     git init
+      #     git remote add origin https://github.com/google/ngx_brotli.git
+      #     git fetch --depth 1 origin $VER_NGINX_BROTLI
+      #     git checkout --recurse-submodules -q FETCH_HEAD
+      #     git submodule update --init --depth 1
+      #     ls -la
 
-      - name: Download BoringSSL
-        run: |
-          mkdir -p boringssl-$VER_BORINGSSL
-          cd boringssl-$VER_BORINGSSL
-          git init
-          git remote add origin https://boringssl.googlesource.com/boringssl
-          git fetch --depth 1 origin $VER_BORINGSSL
-          git checkout --recurse-submodules -q FETCH_HEAD
-          git submodule update --init --depth 1
-          ls -la
+      # - name: Download BoringSSL
+      #   run: |
+      #     mkdir -p boringssl-$VER_BORINGSSL
+      #     cd boringssl-$VER_BORINGSSL
+      #     git init
+      #     git remote add origin https://boringssl.googlesource.com/boringssl
+      #     git fetch --depth 1 origin $VER_BORINGSSL
+      #     git checkout --recurse-submodules -q FETCH_HEAD
+      #     git submodule update --init --depth 1
+      #     ls -la
 
-      - name: Build Origin
-        run: |
-          docker build \
-          --build-arg ARCH=amd64 \
-          --build-arg DISTRO=ubuntu \
-          --build-arg DISTRO_VER=$VER_UBUNTU \
-          --build-arg IMAGE_NAME=$IMAGE_NAME \
-          --build-arg VER_NGINX=$VER_NGINX \
-          --build-arg VER_BORINGSSL=$VER_BORINGSSL \
-          --build-arg VER_NGINX_ZSTD=$VER_NGINX_ZSTD \
-          --build-arg VER_NGINX_BROTLI=$VER_NGINX_BROTLI \
-          -t $IMAGE_NAME:boringssl .
-      - name: Patch BoringSSL
-        run: |
-          dotnet tool install -g dotnet-script
-          ~/.dotnet/tools/dotnet-script change_cipher.csx -- boringssl-$VER_BORINGSSL/ssl/ssl_cipher.cc TLS_AES_128_GCM_SHA256
-          ~/.dotnet/tools/dotnet-script change_cipher.csx -- boringssl-$VER_BORINGSSL/ssl/ssl_cipher.cc TLS_CHACHA20_POLY1305_SHA256
-      - name: Build Patch AES256
-        run: |
-          docker build \
-          --build-arg ARCH=amd64 \
-          --build-arg DISTRO=ubuntu \
-          --build-arg DISTRO_VER=$VER_UBUNTU \
-          --build-arg VER_NGINX=$VER_NGINX \
-          --build-arg VER_BORINGSSL=$VER_BORINGSSL \
-          --build-arg VER_NGINX_ZSTD=$VER_NGINX_ZSTD \
-          --build-arg VER_NGINX_BROTLI=$VER_NGINX_BROTLI \
-          -t $IMAGE_NAME:boringssl-aes256 .
+      # - name: Build Origin
+      #   run: |
+      #     docker build \
+      #     --build-arg ARCH=amd64 \
+      #     --build-arg DISTRO=ubuntu \
+      #     --build-arg DISTRO_VER=$VER_UBUNTU \
+      #     --build-arg IMAGE_NAME=$IMAGE_NAME \
+      #     --build-arg VER_NGINX=$VER_NGINX \
+      #     --build-arg VER_BORINGSSL=$VER_BORINGSSL \
+      #     --build-arg VER_NGINX_ZSTD=$VER_NGINX_ZSTD \
+      #     --build-arg VER_NGINX_BROTLI=$VER_NGINX_BROTLI \
+      #     -t $IMAGE_NAME:boringssl .
+      # - name: Patch BoringSSL
+      #   run: |
+      #     dotnet tool install -g dotnet-script
+      #     ~/.dotnet/tools/dotnet-script change_cipher.csx -- boringssl-$VER_BORINGSSL/ssl/ssl_cipher.cc TLS_AES_128_GCM_SHA256
+      #     ~/.dotnet/tools/dotnet-script change_cipher.csx -- boringssl-$VER_BORINGSSL/ssl/ssl_cipher.cc TLS_CHACHA20_POLY1305_SHA256
+      # - name: Build Patch AES256
+      #   run: |
+      #     docker build \
+      #     --build-arg ARCH=amd64 \
+      #     --build-arg DISTRO=ubuntu \
+      #     --build-arg DISTRO_VER=$VER_UBUNTU \
+      #     --build-arg VER_NGINX=$VER_NGINX \
+      #     --build-arg VER_BORINGSSL=$VER_BORINGSSL \
+      #     --build-arg VER_NGINX_ZSTD=$VER_NGINX_ZSTD \
+      #     --build-arg VER_NGINX_BROTLI=$VER_NGINX_BROTLI \
+      #     -t $IMAGE_NAME:boringssl-aes256 .
 
       - name: Setup Tunnel
         env:
@@ -99,7 +99,7 @@ jobs:
           sudo echo "127.0.0.1 $MY_HOSTNAME" | sudo tee -a /etc/hosts
           wget -q https://github.com/MetaCubeX/mihomo/releases/download/v1.19.18/mihomo-linux-amd64-v3-v1.19.18.deb
           sudo apt install ./mihomo-linux-amd64-v3-v1.19.18.deb
-          nohup mihomo -config $TUNNEL_CONFIG > /dev/null 2>&1 &
+          nohup mihomo -config $TUNNEL_CONFIG 2>/dev/null &
 
       - name: Upload
         run: |
