@@ -10,7 +10,7 @@
 
 ARG ARCH=
 ARG DISTRO=ubuntu
-ARG DISTRO_VER=25.04
+ARG DISTRO_VER=26.04
 ARG IMAGE_NAME=
 
 #############################
