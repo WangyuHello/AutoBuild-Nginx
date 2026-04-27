@@ -2,7 +2,7 @@ name: Build
 on: [workflow_dispatch]
 
 env:
-  VER_UBUNTU: 25.10
+  VER_UBUNTU: 25.04
   VER_NGINX: 1.30.0
   VER_BORINGSSL: 7f6c169fe92a74445bc090286a9970cd1b7c1280
   VER_ZSTD: 1.5.7
